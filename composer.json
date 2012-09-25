@@ -1,0 +1,26 @@
+{
+    "name": "wxr/common-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony WXRFileBundle",
+    "keywords": [ "wxr", "common" ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lionel Gaillard",
+            "email": "lionel.gaillard@wxrstudios.com",
+            "homepage": "http://wxrstudios.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "WXR\\Common": "src/"
+        }
+    }
+}
