@@ -1,7 +1,7 @@
 {
     "name": "wxr/common-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony WXRFileBundle",
+    "description": "Symfony WXRCommonBundle",
     "keywords": [ "wxr", "common" ],
     "license": "MIT",
     "authors": [
