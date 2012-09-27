@@ -69,7 +69,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function findOneBy(array $criteria)
     {
-        return $this->buildQuery(false, $criteria)->getSingleResult();
+        return $this->getQueryBuilder(false, $criteria)->getQuery()->getSingleResult();
     }
 
     /**
@@ -77,7 +77,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->buildQuery(false, $criteria, $orderBy, $limit, $offset)->getResult();
+        return $this->getQueryBuilder(false, $criteria, $orderBy, $limit, $offset)->getQuery()->getResult();
     }
 
     /**
@@ -85,7 +85,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function countBy(array $criteria)
     {
-        return $this->buildQuery(true, $criteria)->getSingleScalarResult();
+        return $this->getQueryBuilder(true, $criteria)->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -93,7 +93,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function findAll()
     {
-        return $this->buildQuery(false, array())->getResult();
+        return $this->getQueryBuilder(false, array())->getQuery()->getResult();
     }
 
     /**
@@ -101,7 +101,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function countAll()
     {
-        return $this->buildQuery(true, array())->getSingleScalarResult();
+        return $this->getQueryBuilder(true, array())->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -127,7 +127,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $paramKey = '_s';
         $i = 0;
 
-        if (!empty($value)) {
+        if (!empty($properties) || !empty($value)) {
             return;
         }
 
@@ -146,7 +146,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $qb->addWhere(implode(' AND ', $wordsConditions));
     }
 
-    public function buildQuery($count, array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function getQueryBuilder($count, array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->em->createQueryBuilder();
 
@@ -166,7 +166,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
             }
         }
 
-        return $qb->getQuery();
+        return $qb;
     }
 
     protected function buildSelectClause(QueryBuilder $qb, $count)
