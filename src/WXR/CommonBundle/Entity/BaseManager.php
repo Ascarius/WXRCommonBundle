@@ -262,10 +262,14 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $alias = $this->alias;
         $paramKey = '_c';
 
+        // Add base alias if not set
+        $column = false === strpos($property, '.') ?
+            $this->alias.'.'.$property : $property;
+
         // Null value
         if (is_null($value)) {
 
-            $qb->addWhere($alias.'.'.$property.' IS NULL');
+            $qb->addWhere($column.' IS NULL');
 
         // Operator & value
         } elseif (is_array($value) && count($value) == 2) {
@@ -280,7 +284,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
                 case '>':
                 case '>=':
                 case 'LIKE':
-                    $qb->addWhere($alias.'.'.$property.' '.$operator.' :'.$paramKey.$index);
+                    $qb->addWhere($column.' '.$operator.' :'.$paramKey.$index);
                     $qb->setParameter($paramKey.$index, $value[1]);
                     break;
 
@@ -293,7 +297,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         // Equal
         } else {
 
-            $qb->addWhere($alias.'.'.$property.' = :'.$paramKey.$index);
+            $qb->addWhere($column.' = :'.$paramKey.$index);
             $qb->setParameter($paramKey.$index, $value);
 
         }
@@ -309,7 +313,12 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     {
         if ($orderBy) {
             foreach ($orderBy as $property => $direction) {
-                $qb->addOrderBy($this->alias.'.'.$property, $direction);
+
+                // Add base alias if not set
+                $column = false === strpos($property, '.') ?
+                    $this->alias.'.'.$property : $property;
+
+                $qb->addOrderBy($column, $direction);
             }
         }
     }
