@@ -8,6 +8,9 @@ use Doctrine\ORM\QueryBuilder;
 
 class BaseManager extends \WXR\CommonBundle\Model\BaseManager
 {
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**
@@ -25,7 +28,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function persist($entity)
     {
@@ -41,7 +44,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function remove($entity)
     {
@@ -57,7 +60,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function find($id)
     {
@@ -65,7 +68,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findOneBy(array $criteria)
     {
@@ -73,7 +76,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -81,7 +84,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function countBy(array $criteria)
     {
@@ -89,7 +92,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findAll()
     {
@@ -97,7 +100,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function countAll()
     {
@@ -105,7 +108,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getCriteriaHandlers()
     {
@@ -114,11 +117,23 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         return $handlers;
     }
 
+    /**
+     * Get search properties
+     * Properties on which searchHandler will perform
+     *
+     * @return array
+     */
     public function getSearchableProperties()
     {
         return array();
     }
 
+    /**
+     * Search handler
+     *
+     * @param QueryBuilder $qb
+     * @param string $value
+     */
     public function searchHandler(QueryBuilder $qb, $value)
     {
         $value = trim($value);
@@ -132,10 +147,14 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         }
 
         foreach (explode(' ', $value) as $word) {
-
             $propertiesConditions = array();
+
             foreach ($properties as $property) {
-                $propertiesConditions[] = sprintf('%s.%s LIKE :%s%d', $this->alias, $property, $paramKey, $i);
+                // Add base alias if not set
+                $column = false === strpos($property, '.') ?
+                    $this->alias.'.'.$property : $property;
+
+                $propertiesConditions[] = $column.' LIKE :'.$paramKey.$i;
                 $qb->setParameter($paramKey.$i, '%'.$word.'%');
             }
 
@@ -146,6 +165,16 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $qb->addWhere(implode(' AND ', $wordsConditions));
     }
 
+    /**
+     * Get query builder
+     *
+     * @param boolean $count
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param integer|null $limit
+     * @param integer|null $offset
+     * @return QueryBuilder
+     */
     public function getQueryBuilder($count, array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->em->createQueryBuilder();
@@ -169,6 +198,12 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         return $qb;
     }
 
+    /**
+     * Build SELECT clause
+     *
+     * @param QueryBuilder $qb
+     * @param boolean $count
+     */
     protected function buildSelectClause(QueryBuilder $qb, $count)
     {
         if ($count) {
@@ -178,11 +213,22 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         }
     }
 
+    /**
+     * Build FROM clause
+     *
+     * @param QueryBuilder $qb
+     */
     protected function buildFromClause(QueryBuilder $qb)
     {
         $qb->from($this->class, $this->alias);
     }
 
+    /**
+     * Build WHERE clause
+     *
+     * @param QueryBuilder $qb
+     * @param array $criteria
+     */
     protected function buildWhereClause(QueryBuilder $qb, array $criteria)
     {
         $handlers = $this->getCriteriaHandlers();
@@ -203,6 +249,14 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         }
     }
 
+    /**
+     * Process unhandled criterium
+     *
+     * @param QueryBuilder $qb
+     * @param string $property
+     * @param mixed $value
+     * @param integer $index
+     */
     protected function processCriterium(QueryBuilder $qb, $property, $value, $index)
     {
         $alias = $this->alias;
@@ -216,7 +270,9 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         // Operator & value
         } elseif (is_array($value) && count($value) == 2) {
 
-            switch ($value[0]) {
+            $operator = $value[0];
+
+            switch ($operator) {
                 case '=':
                 case '!=':
                 case '<':
@@ -224,14 +280,14 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
                 case '>':
                 case '>=':
                 case 'LIKE':
-                    $qb->addWhere($alias.'.'.$property.' '.$value[0].' :'.$paramKey.$index);
+                    $qb->addWhere($alias.'.'.$property.' '.$operator.' :'.$paramKey.$index);
                     $qb->setParameter($paramKey.$index, $value[1]);
                     break;
 
                 // TODO: IN
 
                 default:
-                    throw new \InvalidArgumentException(sprintf('Operator "%s" was not recognized', $value[0]));
+                    throw new \InvalidArgumentException(sprintf('Operator "%s" was not recognized', $operator));
             }
 
         // Equal
@@ -243,6 +299,12 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         }
     }
 
+    /**
+     * Build ORDER BY clause
+     *
+     * @param QueryBuilder $qb
+     * @param array|null $orderBy
+     */
     protected function buildOrderClause(QueryBuilder $qb, array $orderBy = null)
     {
         if ($orderBy) {

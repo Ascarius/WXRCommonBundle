@@ -5,7 +5,7 @@ namespace WXR\CommonBundle\Model;
 interface BaseManagerInterface
 {
     /**
-     * Get FQCN of entity object
+     * Get FQCN of model object
      *
      * @return string
      */
