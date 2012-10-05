@@ -17,7 +17,7 @@ abstract class BaseManager implements BaseManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getClass()
     {
@@ -25,7 +25,7 @@ abstract class BaseManager implements BaseManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function create()
     {

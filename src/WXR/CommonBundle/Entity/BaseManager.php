@@ -62,6 +62,14 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     /**
      * {@inheritDoc}
      */
+    public function refresh($entity)
+    {
+        $this->em->refresh();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function find($id)
     {
         return $this->em->getRepository($this->class)->find($id);

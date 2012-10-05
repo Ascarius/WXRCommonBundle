@@ -12,28 +12,35 @@ interface BaseManagerInterface
     public function getClass();
 
     /**
-     * Create new entity
+     * Create new model object
      *
      * @return object
      */
     public function create();
 
     /**
-     * Persist entity/ies
+     * Persist model object(s)
      *
-     * @param object|object[] $entity
+     * @param object|object[] $object
      */
-    public function persist($entity);
+    public function persist($object);
 
     /**
-     * Remove entity object(s)
+     * Remove model object(s)
      *
-     * @param object|object[] $entity
+     * @param object|object[] $object
      */
-    public function remove($entity);
+    public function remove($object);
 
     /**
-     * Find entity by id
+     * Refresh model object
+     *
+     * @param object $object
+     */
+    public function refresh($object);
+
+    /**
+     * Find model object by id
      *
      * @param mixed $id
      * @return object|null
