@@ -277,7 +277,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         // Null value
         if (is_null($value)) {
 
-            $qb->addWhere($column.' IS NULL');
+            $qb->andWhere($column.' IS NULL');
 
         // Operator & value
         } elseif (is_array($value) && count($value) == 2) {
@@ -305,7 +305,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         // Equal
         } else {
 
-            $qb->addWhere($column.' = :'.$paramKey.$index);
+            $qb->andWhere($column.' = :'.$paramKey.$index);
             $qb->setParameter($paramKey.$index, $value);
 
         }
