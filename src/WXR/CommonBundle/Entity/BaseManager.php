@@ -80,7 +80,11 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function findOneBy(array $criteria)
     {
-        return $this->getQueryBuilder(false, $criteria)->getQuery()->getSingleResult();
+        try {
+            return $this->getQueryBuilder(false, $criteria)->getQuery()->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
     }
 
     /**
