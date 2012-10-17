@@ -64,7 +64,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function refresh($entity)
     {
-        $this->em->refresh();
+        $this->em->refresh($entity);
     }
 
     /**
@@ -147,7 +147,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $value = trim($value);
         $properties = $this->getSearchableProperties();
         $wordsConditions = array();
-        $paramKey = '_s';
+        $paramKey = 'search';
         $i = 0;
 
         if (!empty($properties) || !empty($value)) {
@@ -268,7 +268,8 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     protected function processCriterium(QueryBuilder $qb, $property, $value, $index)
     {
         $alias = $this->alias;
-        $paramKey = '_c';
+        $paramKey = 'criterium';
+        $param = $paramKey.$index;
 
         // Add base alias if not set
         $column = false === strpos($property, '.') ?
@@ -292,8 +293,8 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
                 case '>':
                 case '>=':
                 case 'LIKE':
-                    $qb->addWhere($column.' '.$operator.' :'.$paramKey.$index);
-                    $qb->setParameter($paramKey.$index, $value[1]);
+                    $qb->addWhere($column.' '.$operator.' :'.$param);
+                    $qb->setParameter($param, $value[1]);
                     break;
 
                 // TODO: IN
@@ -305,8 +306,8 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         // Equal
         } else {
 
-            $qb->andWhere($column.' = :'.$paramKey.$index);
-            $qb->setParameter($paramKey.$index, $value);
+            $qb->andWhere($column.' = :'.$param);
+            $qb->setParameter($param, $value);
 
         }
     }
