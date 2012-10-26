@@ -1,0 +1,41 @@
+{% extends "WXRCommonBundle::base.html.twig" %}
+
+{% block body %}
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+{% block navbar_before %}{% endblock %}
+{% block navbar %}
+                <div class="nav-collapse">
+    {% block navbar_menu %}{% endblock %}
+                </div>
+{% endblock %}
+{% block navbar_after %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+{% block content_before %}
+    {% include "WXRCommonBundle::alerts.html.twig" %}
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block content_after %}{% endblock %}
+
+        <hr />
+
+        <footer>
+{% block footer_before %}{% endblock %}
+{% block footer %}
+            <p>{% block copyright %}&copy; WXR studios {{ 'now'|date('Y') }}{% endblock %}</p>
+{% endblock %}
+{% block footer_after %}{% endblock %}
+        </footer>
+
+    </div>
+
+{% endblock %}
