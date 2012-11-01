@@ -5,13 +5,13 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-{% block navbar_before %}{% endblock %}
+{% block navbar_before %}{% endblock navbar_before %}
 {% block navbar %}
                 <div class="nav-collapse">
-    {% block navbar_menu %}{% endblock %}
+    {% block navbar_menu %}{% endblock navbar_menu %}
                 </div>
-{% endblock %}
-{% block navbar_after %}{% endblock %}
+{% endblock navbar %}
+{% block navbar_after %}{% endblock navbar_after %}
             </div>
         </div>
     </div>

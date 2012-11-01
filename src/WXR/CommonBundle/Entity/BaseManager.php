@@ -174,7 +174,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
             ++$i;
         }
 
-        $qb->addWhere(implode(' AND ', $wordsConditions));
+        $qb->andWhere(implode(' AND ', $wordsConditions));
     }
 
     /**
@@ -297,7 +297,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
                 case '>':
                 case '>=':
                 case 'LIKE':
-                    $qb->addWhere($column.' '.$operator.' :'.$param);
+                    $qb->andWhere($column.' '.$operator.' :'.$param);
                     $qb->setParameter($param, $value[1]);
                     break;
 
