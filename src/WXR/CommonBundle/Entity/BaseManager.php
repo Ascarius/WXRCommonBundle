@@ -20,6 +20,13 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     protected $alias = 'a';
 
+    /**
+     * Criteria key for search handler
+     *
+     * @var string
+     */
+    protected $searchKey = '_search';
+
     public function __construct(EntityManager $em, $class)
     {
         parent::__construct($class);
@@ -124,7 +131,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function getCriteriaHandlers()
     {
-        $handlers['_search'] = array($this, 'searchHandler');
+        $handlers[$this->searchKey] = array($this, 'searchHandler');
 
         return $handlers;
     }
