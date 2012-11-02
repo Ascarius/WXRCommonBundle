@@ -5,37 +5,39 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-{% block navbar_before %}{% endblock navbar_before %}
-{% block navbar %}
+    {% block navbar_before %}
+                <a href="#" class="brand">WXR studios</a>
+    {% endblock %}
+    {% block navbar %}
                 <div class="nav-collapse">
-    {% block navbar_menu %}{% endblock navbar_menu %}
+        {% block navbar_menu %}{% endblock %}
                 </div>
-{% endblock navbar %}
-{% block navbar_after %}{% endblock navbar_after %}
+    {% endblock navbar %}
+    {% block navbar_after %}{% endblock %}
             </div>
         </div>
     </div>
 
     <div class="container">
 
-{% block content_before %}
-    {% include "WXRCommonBundle::alerts.html.twig" %}
-{% endblock %}
+    {% block content_before %}
+        {% include "WXRCommonBundle::alerts.html.twig" %}
+    {% endblock %}
 
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
-{% block content_after %}{% endblock %}
+    {% block content_after %}{% endblock %}
 
         <hr />
 
         <footer>
-{% block footer_before %}{% endblock %}
-{% block footer %}
+    {% block footer_before %}{% endblock %}
+    {% block footer %}
             <p>{% block copyright %}&copy; WXR studios {{ 'now'|date('Y') }}{% endblock %}</p>
-{% endblock %}
-{% block footer_after %}{% endblock %}
+    {% endblock footer %}
+    {% block footer_after %}{% endblock %}
         </footer>
 
     </div>
 
-{% endblock %}
+{% endblock body %}

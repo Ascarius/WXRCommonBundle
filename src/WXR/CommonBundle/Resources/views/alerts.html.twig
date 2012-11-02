@@ -1,21 +1,30 @@
-{% if app.session.hasFlash('error') %}
+{% for flashMessage in app.session.flashbag.get('error') %}
   <div class="alert alert-error">
     <a href="#" class="close" data-dismiss="alert">&times;</a>
-    {{ app.session.flash('error')|trans }}
-    {{ app.session.removeFlash('error') }}
+    {{ flashMessage|trans }}
   </div>
-{% endif %}
-{% if app.session.hasFlash('success') %}
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('warning') %}
+  <div class="alert">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    {{ flashMessage|trans }}
+  </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
   <div class="alert alert-success">
     <a href="#" class="close" data-dismiss="alert">&times;</a>
-    {{ app.session.flash('success')|trans }}
-    {{ app.session.removeFlash('success') }}
+    {{ flashMessage|trans }}
   </div>
-{% endif %}
-{% if app.session.hasFlash('info') %}
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('info') %}
   <div class="alert alert-info">
     <a href="#" class="close" data-dismiss="alert">&times;</a>
-    {{ app.session.flash('info')|trans }}
-    {{ app.session.removeFlash('info') }}
+    {{ flashMessage|trans }}
   </div>
-{% endif %}
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('notice') %}
+  <div class="alert alert-info">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    {{ flashMessage|trans }}
+  </div>
+{% endfor %}
