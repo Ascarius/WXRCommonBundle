@@ -192,7 +192,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $qb = $this->em->createQueryBuilder();
 
         $this->buildSelectClause($qb, $count);
-        $this->buildFromClause($qb);
+        $this->buildFromClause($qb, $criteria);
         $this->buildWhereClause($qb, $criteria);
 
         if (!$count) {
@@ -229,8 +229,9 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      * Build FROM clause
      *
      * @param QueryBuilder $qb
+     * @param array $criteria
      */
-    protected function buildFromClause(QueryBuilder $qb)
+    protected function buildFromClause(QueryBuilder $qb, array $criteria)
     {
         $qb->from($this->class, $this->alias);
     }
