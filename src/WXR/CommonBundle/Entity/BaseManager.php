@@ -107,7 +107,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function countBy(array $criteria)
     {
-        return $this->getQueryBuilder(true, $criteria)->getQuery()->getSingleScalarResult();
+        return (int) $this->getQueryBuilder(true, $criteria)->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -123,7 +123,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
      */
     public function countAll()
     {
-        return $this->getQueryBuilder(true, array())->getQuery()->getSingleScalarResult();
+        return (int) $this->getQueryBuilder(true, array())->getQuery()->getSingleScalarResult();
     }
 
     /**
