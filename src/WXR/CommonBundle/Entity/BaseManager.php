@@ -226,7 +226,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     protected function buildSelectClause(QueryBuilder $qb, $count)
     {
         if ($count) {
-            $qb->select('COUNT('.$this->alias.')');
+            $qb->select('COUNT(DISTINCT '.$this->alias.')');
         } else {
             $qb->select($this->alias);
         }
