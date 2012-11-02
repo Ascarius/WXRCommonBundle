@@ -161,7 +161,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         $paramKey = 'search';
         $i = 0;
 
-        if (!empty($properties) || !empty($value)) {
+        if (empty($properties) || empty($value)) {
             return;
         }
 
