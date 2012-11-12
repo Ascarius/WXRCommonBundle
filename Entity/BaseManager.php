@@ -204,7 +204,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
 
         if (!$count) {
 
-            if ($limit > 1) {
+            if ($limit < 2) {
                 $this->buildOrderClause($qb, $orderBy);
             }
 
