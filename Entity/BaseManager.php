@@ -298,17 +298,30 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         } elseif (is_array($value) && count($value) == 2) {
 
             $operator = $value[0];
+            $value = $value[1];
+
+            if (is_null($value)) {
+                $value = 'NULL';
+
+                if ($operator == '=') {
+                    $operator = 'IS';
+                } elseif ($operator == '!=') {
+                    $operator = 'IS NOT';
+                }
+            }
 
             switch ($operator) {
                 case '=':
+                case 'IS':
                 case '!=':
+                case 'IS NOT':
                 case '<':
                 case '<=':
                 case '>':
                 case '>=':
                 case 'LIKE':
                     $qb->andWhere($column.' '.$operator.' :'.$param);
-                    $qb->setParameter($param, $value[1]);
+                    $qb->setParameter($param, $value);
                     break;
 
                 // TODO: IN
