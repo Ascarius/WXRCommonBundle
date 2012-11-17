@@ -301,33 +301,36 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
             $value = $value[1];
 
             if (is_null($value)) {
-                $value = 'NULL';
 
                 if ($operator == '=') {
                     $operator = 'IS';
                 } elseif ($operator == '!=') {
                     $operator = 'IS NOT';
                 }
-            }
 
-            switch ($operator) {
-                case '=':
-                case 'IS':
-                case '!=':
-                case 'IS NOT':
-                case '<':
-                case '<=':
-                case '>':
-                case '>=':
-                case 'LIKE':
-                    $qb->andWhere($column.' '.$operator.' :'.$param);
-                    $qb->setParameter($param, $value);
-                    break;
+                $qb->andWhere($column.' '.$operator.' NULL');
 
-                // TODO: IN
+            } else {
 
-                default:
-                    throw new \InvalidArgumentException(sprintf('Operator "%s" was not recognized', $operator));
+                switch ($operator) {
+                    case '=':
+                    case 'IS':
+                    case '!=':
+                    case 'IS NOT':
+                    case '<':
+                    case '<=':
+                    case '>':
+                    case '>=':
+                    case 'LIKE':
+                        $qb->andWhere($column.' '.$operator.' :'.$param);
+                        $qb->setParameter($param, $value);
+                        break;
+
+                    // TODO: IN
+
+                    default:
+                        throw new \InvalidArgumentException(sprintf('Operator "%s" was not recognized', $operator));
+                }
             }
 
         // Equal
