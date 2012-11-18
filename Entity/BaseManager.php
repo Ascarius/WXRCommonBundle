@@ -230,7 +230,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
         if ($count) {
             $qb->select('COUNT(DISTINCT '.$this->alias.')');
         } else {
-            $qb->select($this->alias);
+            $qb->select('DISTINCT '.$this->alias);
         }
     }
 
