@@ -314,9 +314,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
 
                 switch ($operator) {
                     case '=':
-                    case 'IS':
                     case '!=':
-                    case 'IS NOT':
                     case '<':
                     case '<=':
                     case '>':
