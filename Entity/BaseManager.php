@@ -324,7 +324,13 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
                         $qb->setParameter($param, $value);
                         break;
 
-                    // TODO: IN
+                    case 'IN':
+                        $qb->andWhere($qb->expr()->in($column, $value));
+                        break;
+
+                    case 'NOT IN':
+                        $qb->andWhere($qb->expr()->notIn($column, $value));
+                        break;
 
                     default:
                         throw new \InvalidArgumentException(sprintf('Operator "%s" was not recognized', $operator));
