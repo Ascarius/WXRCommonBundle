@@ -37,7 +37,7 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
     /**
      * {@inheritDoc}
      */
-    public function persist($entity)
+    public function persist($entity, $andFlush = true)
     {
         if (is_array($entity)) {
             foreach ($entity as $e) {
@@ -47,13 +47,15 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
             $this->em->persist($entity);
         }
 
-        $this->em->flush();
+        if ($andFlush) {
+            $this->em->flush();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function remove($entity)
+    public function remove($entity, $andFlush = true)
     {
         if (is_array($entity)) {
             foreach ($entity as $e) {
@@ -63,7 +65,9 @@ class BaseManager extends \WXR\CommonBundle\Model\BaseManager
             $this->em->remove($entity);
         }
 
-        $this->em->flush();
+        if ($andFlush) {
+            $this->em->flush();
+        }
     }
 
     /**

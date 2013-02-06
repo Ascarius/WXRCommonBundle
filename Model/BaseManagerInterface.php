@@ -22,15 +22,17 @@ interface BaseManagerInterface
      * Persist model object(s)
      *
      * @param object|object[] $object
+     * @param boolean $andFlush
      */
-    public function persist($object);
+    public function persist($object, $andFlush = true);
 
     /**
      * Remove model object(s)
      *
      * @param object|object[] $object
+     * @param boolean $andFlush
      */
-    public function remove($object);
+    public function remove($object, $andFlush = true);
 
     /**
      * Refresh model object
